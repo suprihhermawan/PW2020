@@ -2,6 +2,14 @@
   require 'functions.php';
   $siswa = query("SELECT * FROM siswa");
 
+
+
+  //ketika tombol cari di klik
+  if (isset($_POST['cari'])) {
+    $siswa = cari($_POST['keyword']);
+  }
+
+
   ?>
 
 
@@ -13,26 +21,42 @@
 
 <body>
   <h3> Daftar Mahasiswa</h3>
+  <a href="tambah.php">Tambah Data mahasiswa</a>
+  <br></br>
+
+  <form action="" method="POST">
+    <input type="text" name="keyword" size="40" placeholder="masukkan kata pencarian" autocomplete="off" autofocus>
+    <button type="submit" name="cari">cari</button>
+  </form>
+  <br>
   <table border="1" cellpadding="10" cellspacing="0">
     <tr>
       <th># </th>
       <th>gambar</th>
-      <th>NRP</th>
       <th>Nama</th>
-      <th>Email</th>
-      <th>jurusan</th>
       <th>Aksi</th>
     </tr>
+
+    <?php if (empty($siswa)) : ?>
+      <tr>
+        <td colspan="4">
+          <p style="color : red; font-style:italic;"> data siswa tidak ditemukan
+        </td>
+      </tr>
+
+    <?php endif; ?>
+
+
+
     <?php $i = 1;
     foreach ($siswa as $m) : ?>
       <tr>
         <td><?= $i++; ?></td>
         <td><img src="img/<?= $m['gambar']; ?>" width "30"></td>
-        <td><?= $m['nrp']; ?></td>
+
         <td><?= $m['nama']; ?></td>
-        <td><?= $m['email']; ?></td>
-        <td><?= $m['jurusan']; ?></td>
-        <td><a href="">ubah</a>|<a href="">hapus</a></td>
+
+        <td><a href="detail.php?id=<?= $m['id']; ?>">lihat detail</a>
 
       </tr>
     <?php endforeach; ?>
